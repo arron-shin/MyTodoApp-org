@@ -12,23 +12,18 @@ class ViewController {
         return "home";
     }
 
-    @GetMapping("/todo/main")
-    fun mainView(): String {
-        return "todo-main";
+    @GetMapping("/tasks")
+    fun taskListView(): String {
+        return "task-list";
     }
 
-    @GetMapping("/todo/tasks/{id}")
-    fun taskDetailView(@PathVariable id: String): String {
-        return "task-detail";
+    @GetMapping("/tasks/{id}")
+    fun taskUpdateView(@PathVariable id: Long): String {
+        return "task-update";
     }
 
-    @GetMapping("/todo/tasks/new")
-    fun taskPostView(): String {
+    @GetMapping("/tasks/new")
+    fun taskAddView(): String {
         return "task-new";
-    }
-
-    @GetMapping("/todo/tasks/{id}/modify")
-    fun taskModifyView(@PathVariable id: String): String {
-        return "task-modify";
     }
 }
