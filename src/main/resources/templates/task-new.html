@@ -24,16 +24,16 @@
           <div class="g-3">
             <div class="mb-3 col-6">
               <label for="title" class="form-label">제목<span class="text-muted"></span></label>
-              <input type="text" class="form-control" id="title" placeholder="작업 제목을 입력하세요." required>
+              <input id="title" type="text" class="form-control" placeholder="작업 제목을 입력하세요." required>
             </div>
             <div class="mb-3 col-6">
               <label for="memo" class="form-label">메모</label>
-              <input type="text" class="form-control" id="memo" placeholder="작업에 대한 설명을 작성하세요." required>
+              <input id="memo" type="text" class="form-control" placeholder="작업에 대한 설명을 작성하세요." required>
             </div>
             <div class="mb-3 col-6">
               <label for="deadline" class="form-label">날짜</label>
               <div class="input-group date" id="datetimepicker" data-target-input="nearest">
-                <input type="text" class="form-control datetimepicker-input" data-toggle="datetimepicker" data-target="#datetimepicker"/>
+                <input id="deadline" type="text" class="form-control datetimepicker-input" data-toggle="datetimepicker" data-target="#datetimepicker"/>
               </div>
             </div>
           <hr class="col-6">
@@ -45,7 +45,24 @@
       // 작업 추가 버튼이 클릭된다면 실행
       $("#buttonAddNewTask").click(function() {
         // 작업 리스트 화면으로 이동
-        window.location.href = '/tasks';
+        var data = {
+            title: $('#title').val(),
+            memo: $('#memo').val(),
+            deadline: new Date($('#deadline').val()).toISOString()
+        }
+        console.log(data)
+        $.ajax({
+            type: 'POST',
+            url: '/api/v1/tasks',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function(data) {
+            alert('작업 추가 완료');
+            window.location.href = '/tasks';
+        }).fail(function(error) {
+            alert('작업 추가 오류' + JSON.stringify(error));
+        })
         return false;
       });
       $(function () {

@@ -24,16 +24,16 @@
           <div class="g-3">
             <div class="mb-3 col-6">
               <label for="title" class="form-label">제목<span class="text-muted"></span></label>
-              <input type="text" class="form-control" id="title" placeholder="작업 제목을 입력하세요." required>
+              <input id="title" th:value="${task.title}" type="text" class="form-control" placeholder="작업 제목을 입력하세요." required>
             </div>
             <div class="mb-3 col-6">
               <label for="memo" class="form-label">메모</label>
-              <input type="text" class="form-control" id="memo" placeholder="작업에 대한 설명을 작성하세요." required>
+              <input id="memo" th:value="${task.memo}" type="text" class="form-control" placeholder="작업에 대한 설명을 작성하세요." required>
             </div>
             <div class="mb-3 col-6">
               <label for="deadline" class="form-label">날짜</label>
               <div class="input-group date" id="datetimepicker" data-target-input="nearest">
-                <input type="text" class="form-control datetimepicker-input" data-toggle="datetimepicker" data-target="#datetimepicker"/>
+                <input id="deadline" th:value="${#temporals.format(task.deadline, 'yyyy-MM-dd')}" type="text" class="form-control datetimepicker-input" data-toggle="datetimepicker" data-target="#datetimepicker"/>
               </div>
             </div>
           <hr class="col-6">
@@ -45,12 +45,31 @@
       // 작업 수정 버튼이 클릭된다면 실행
       $("#buttonModifyTask").click(function() {
         // 작업 리스트 화면으로 이동
-        window.location.href = '/tasks';
+        /*<![CDATA[*/
+        var id = [[${task.id}]];
+        var data = {
+            title: $('#title').val(),
+            memo: $('#memo').val(),
+            deadline: new Date($('#deadline').val()).toISOString()
+        }
+        /*]]>*/
+        $.ajax({
+            type: 'PUT',
+            url: '/api/v1/tasks/' + id,
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function() {
+            alert('작업 수정 완료');
+            window.location.href = '/tasks';
+        }).fail(function(error) {
+            alert('작업 수정 오류' + JSON.stringify(error));
+        })
         return false;
       });
       $(function () {
         $('#datetimepicker').datetimepicker({
-          format: 'L'
+          format: 'yyyy-MM-DD'
         });
       });
     </script>

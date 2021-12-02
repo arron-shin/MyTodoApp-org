@@ -19,50 +19,18 @@
   </head>
   <body>
     <div class="list-group mb-3">
-      <label class="list-group-item d-flex gap-3">
-        <input class="form-check-input" type="checkbox" value="" checked style="font-size: 1.375em;">
+      <label th:each="task : ${tasks}" class="list-group-item d-flex gap-3">
+        <input th:checked="${task.checked}" class="form-check-input" type="checkbox" value="" style="font-size: 1.375em;">
         <span class="pt-1 form-checked-content list-group-item-content">
-          <strong>Task 1 on This Week ...</strong>
-          <small class="d-block text-muted">
-            This is a important issue for me.
+          <strong th:text="${task.title}"></strong>
+          <small th:text="${task.memo}" class="d-block text-muted">
           </small>
-          <small class="d-block text-muted">
+          <small th:text="${#temporals.format(task.deadline, 'yyyy-MM-dd')}" class="d-block text-muted">
             <img th:src="@{/icons/calendar-event.svg}" class="bi me-1">
-            2021.01.01
           </small>
         </span>
-        <button id="buttonModifyTask1" class="btn btn-sm btn-outline-success">수정</button>
-        <button id="buttonDeleteTask1" class="btn btn-sm btn-outline-danger">삭제</button>
-      </label>
-      <label class="list-group-item d-flex gap-3">
-        <input class="form-check-input" type="checkbox" value="" style="font-size: 1.375em;">
-        <span class="pt-1 form-checked-content list-group-item-content">
-          <strong>Task 2 on This Week</strong>
-          <small class="d-block text-muted">
-            This is a important issue for me.
-          </small>
-          <small class="d-block text-muted">
-            <img th:src="@{/icons/calendar-event.svg}" class="bi me-1">
-            2021.01.01
-          </small>
-        </span>
-        <button id="buttonModifyTask2" class="btn btn-sm btn-outline-success">수정</button>
-        <button id="buttonDeleteTask2" class="btn btn-sm btn-outline-danger">삭제</button>
-      </label>
-      <label class="list-group-item d-flex gap-3">
-        <input class="form-check-input" type="checkbox" value="" style="font-size: 1.375em;">
-        <span class="pt-1 form-checked-content list-group-item-content">
-          <strong>Task 3 on This Week</strong>
-          <small class="d-block text-muted">
-            This is a important issue for me.
-          </small>
-          <small class="d-block text-muted">
-            <img th:src="@{/icons/calendar-event.svg}" class="bi me-1">
-            2021.01.03
-          </small>
-        </span>
-        <button id="buttonModifyTask3" class="btn btn-sm btn-outline-success">수정</button>
-        <button id="buttonDeleteTask3" class="btn btn-sm btn-outline-danger">삭제</button>
+        <button th:onclick="|updateTask('${task.id}')|" class="btn btn-sm btn-outline-success">수정</button>
+        <button th:onclick="|deleteTask('${task.id}')|" class="btn btn-sm btn-outline-danger">삭제</button>
       </label>
     </div>
     <div class="text-center">
@@ -70,38 +38,26 @@
     </div>
   </body>
     <script>
-      // 수정 버튼이 클릭된다면 실행
-      $("#buttonModifyTask1").click(function() {
-        // 작업 수정 화면으로 이동
-        window.location.href = '/tasks/1';
-        return false;
-      });
-      $("#buttonModifyTask2").click(function() {
-        // 작업 수정 화면으로 이동
-        window.location.href = '/tasks/2';
-        return false;
-      });
-      $("#buttonModifyTask3").click(function() {
-        // 작업 수정 화면으로 이동
-        window.location.href = '/tasks/3';
-        return false;
-      });
-      // 삭제 버튼이 클릭된다면 실행
-      $("#buttonDeleteTask1").click(function() {
-        // 작업 삭제 얼럿 실행
-        alert("작업1을 삭제합니다.")
-        return false;
-      });
-      $("#buttonDeleteTask2").click(function() {
-        // 작업 삭제 얼럿 실행
-        alert("작업2을 삭제합니다.")
-        return false;
-      });
-      $("#buttonDeleteTask3").click(function() {
-        // 작업 삭제 얼럿 실행
-        alert("작업3을 삭제합니다.")
-        return false;
-      });
+      // 작업 수정 버튼이 클릭된다면 실행
+      function updateTask(taskId) {
+        window.location.href = '/tasks/' + taskId;
+        return false
+      }
+      // 작업 삭제 버튼이 클릭된다면 실행
+      function deleteTask(taskId) {
+        $.ajax({
+            type: 'DELETE',
+            url: '/api/v1/tasks/' + taskId,
+            dataType: 'text',
+            contentType: 'application/json; charset=utf-8'
+        }).done(function(data) {
+            alert('작업 삭제 완료');
+            window.location.href = '/tasks';
+        }).fail(function(error) {
+            alert('작업 삭제 오류' + JSON.stringify(error));
+        })
+        return false
+      }
       // 작업 추가 버튼이 클릭된다면 실행
       $("#buttonAddNewTask").click(function() {
         // 작업 추가 화면으로 이동

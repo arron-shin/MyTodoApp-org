@@ -1,10 +1,11 @@
 package me.jungseob.apps.mytodoapp.controller.dto
 
 import java.time.LocalDateTime
+import org.springframework.format.annotation.DateTimeFormat
 
-data class PostTaskRequestDto(
+data class PutTaskRequestDto(
     val title: String,
     val memo: String,
-    val checked: Boolean = false,
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     val deadline: LocalDateTime,
 )
