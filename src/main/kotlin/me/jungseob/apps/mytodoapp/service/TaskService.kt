@@ -1,6 +1,7 @@
 package me.jungseob.apps.mytodoapp.service
 
 import java.time.LocalDateTime
+import me.jungseob.apps.mytodoapp.exception.MyNotFoundException
 import me.jungseob.apps.mytodoapp.repository.TaskRepository
 import me.jungseob.apps.mytodoapp.repository.entity.toEntity
 import me.jungseob.apps.mytodoapp.repository.entity.toModel
@@ -30,7 +31,10 @@ class TaskService(
 
     fun getTask(id: Long): Task? {
         val optionalTaskEntity = taskRepository.findById(id)
-        return optionalTaskEntity.orElse(null).toModel()
+        return optionalTaskEntity
+            .orElseThrow {
+                throw MyNotFoundException("Not found resource.")
+            }.toModel()
     }
 
     fun list(): List<Task> {
@@ -53,7 +57,7 @@ class TaskService(
             )
             taskRepository.save(updatedEntity).toModel()
         }.orElseThrow {
-            throw RuntimeException()
+            throw MyNotFoundException("Not found resource.")
         }
     }
 

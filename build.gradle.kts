@@ -24,7 +24,8 @@ repositories {
 }
 
 dependencies {
-    runtimeOnly("mysql:mysql-connector-java") // MySQL
+    runtimeOnly("mysql:mysql-connector-java")
+    implementation("io.github.microutils:kotlin-logging:2.1.21")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
