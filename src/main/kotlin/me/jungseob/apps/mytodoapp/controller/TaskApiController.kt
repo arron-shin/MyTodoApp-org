@@ -60,7 +60,7 @@ class TaskApiController(
     }
 
     @GetMapping
-    fun list(): List<Task> {
+    fun listTask(): List<Task> {
         logger.info { "[API] GET /api/v1/tasks" }
         return taskService.list()
     }

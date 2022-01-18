@@ -33,6 +33,10 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE")
 
+    testImplementation("com.ninja-squad:springmockk:3.0.1")
+    testImplementation("io.mockk:mockk:1.12.2")
+    testImplementation("org.apache.commons:commons-lang3:3.12.0")
+    testImplementation("org.assertj:assertj-core:3.22.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
