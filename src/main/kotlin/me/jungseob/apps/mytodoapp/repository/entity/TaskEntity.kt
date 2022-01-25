@@ -1,6 +1,6 @@
 package me.jungseob.apps.mytodoapp.repository.entity
 
-import java.time.LocalDateTime
+import java.time.Instant
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
@@ -17,7 +17,7 @@ data class TaskEntity(
     val title: String,
     val memo: String,
     val checked: Boolean,
-    val deadline: LocalDateTime,
+    val deadline: Instant,
 )
 
 fun Task.toEntity() = TaskEntity(

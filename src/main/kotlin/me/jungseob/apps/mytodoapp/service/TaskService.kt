@@ -1,5 +1,6 @@
 package me.jungseob.apps.mytodoapp.service
 
+import java.time.Instant
 import java.time.LocalDateTime
 import me.jungseob.apps.mytodoapp.exception.MyNotFoundException
 import me.jungseob.apps.mytodoapp.repository.TaskRepository
@@ -17,7 +18,7 @@ class TaskService(
         title: String,
         memo: String,
         checked: Boolean,
-        deadline: LocalDateTime,
+        deadline: Instant,
     ): Task {
         val task = Task(
             title = title,
@@ -46,7 +47,7 @@ class TaskService(
         id: Long,
         title: String,
         memo: String,
-        deadline: LocalDateTime,
+        deadline: Instant,
     ): Task {
         val optionalTaskEntity = taskRepository.findById(id)
         return optionalTaskEntity.map { taskEntity ->

@@ -1,6 +1,6 @@
 package me.jungseob.apps.mytodoapp.util
 
-import java.time.LocalDateTime
+import java.time.Instant
 import kotlin.random.Random
 import me.jungseob.apps.mytodoapp.service.model.Task
 
@@ -9,7 +9,7 @@ fun randomTask(
     title: String = randomShortAlphanumeric(),
     memo: String = randomShortAlphanumeric(),
     checked: Boolean = Random.nextBoolean(),
-    deadline: LocalDateTime = LocalDateTime.now(),
+    deadline: Instant = randomInstant(),
 ): Task = Task(
     id = id,
     title = title,

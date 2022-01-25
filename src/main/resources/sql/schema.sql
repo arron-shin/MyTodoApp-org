@@ -4,7 +4,7 @@ create table if not exists tasks
     title    VARCHAR(256) not null,
     memo     longtext,
     checked  boolean not null,
-    deadline DATETIME not null,
+    deadline DATETIME(6) not null,
     primary key (id),
     index idx_checked (checked),
     index idx_deadline (deadline)

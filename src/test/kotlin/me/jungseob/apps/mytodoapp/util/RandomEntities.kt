@@ -1,15 +1,15 @@
 package me.jungseob.apps.mytodoapp.util
 
-import java.time.LocalDateTime
+import java.time.Instant
 import kotlin.random.Random
 import me.jungseob.apps.mytodoapp.repository.entity.TaskEntity
 
 fun randomTaskEntity(
-    id: Long = randomNonNegativeLong(),
+    id: Long? = randomNonNegativeLong(),
     title: String = randomShortAlphanumeric(),
     memo: String = randomShortAlphanumeric(),
     checked: Boolean = Random.nextBoolean(),
-    deadline: LocalDateTime = LocalDateTime.now(),
+    deadline: Instant = randomInstant(),
 ): TaskEntity = TaskEntity(
     id = id,
     title = title,

@@ -7,11 +7,11 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.justRun
 import io.mockk.verify
-import java.time.LocalDateTime
 import kotlin.random.Random
 import me.jungseob.apps.mytodoapp.controller.dto.PostTaskRequestDto
 import me.jungseob.apps.mytodoapp.controller.dto.PutTaskRequestDto
 import me.jungseob.apps.mytodoapp.service.TaskService
+import me.jungseob.apps.mytodoapp.util.randomInstant
 import me.jungseob.apps.mytodoapp.util.randomNonNegativeLong
 import me.jungseob.apps.mytodoapp.util.randomShortAlphanumeric
 import me.jungseob.apps.mytodoapp.util.randomTask
@@ -55,7 +55,7 @@ class TaskApiControllerTest {
             title = randomShortAlphanumeric(),
             memo = randomShortAlphanumeric(),
             checked = Random.nextBoolean(),
-            deadline = LocalDateTime.now(),
+            deadline = randomInstant(),
         )
         val actual = underTest.postTask(postTaskRequestDto)
 
@@ -83,7 +83,7 @@ class TaskApiControllerTest {
         val putTaskRequestDto = PutTaskRequestDto(
             title = randomShortAlphanumeric(),
             memo = randomShortAlphanumeric(),
-            deadline = LocalDateTime.now(),
+            deadline = randomInstant(),
         )
         underTest.modifyTask(id, putTaskRequestDto)
 
