@@ -59,6 +59,10 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
+tasks.getByName<Jar>("jar") {
+    enabled = false
+}
+
 sourceSets {
     create("integrationTest") {
         compileClasspath += sourceSets.main.get().output + sourceSets.test.get().output
