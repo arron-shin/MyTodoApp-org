@@ -4,7 +4,7 @@ spring:
       on-profile: local
   thymeleaf:
     cache: false
-    prefix: file:src/main/resources/templates/
+    prefix: classpath:/templates/
   datasource:
     url: "jdbc:mysql://localhost:3306/my_db"
     username: "my-user"
@@ -24,9 +24,9 @@ spring:
       on-profile: release
   thymeleaf:
     cache: false
-    prefix: file:src/main/resources/templates/
+    prefix: classpath:/templates/
   datasource:
-    url: "jdbc:mysql://localhost:3306/my_db"
+    url: "jdbc:mysql://database-mysql-mytodoapp.czzetsprii47.ap-northeast-2.rds.amazonaws.com:3306/my_db"
     username: "my-user"
     password: "my-user-pwd"
   jpa:

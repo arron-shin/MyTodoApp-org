@@ -4,7 +4,7 @@ spring:
       on-profile: test
   thymeleaf:
     cache: false
-    prefix: file:src/main/resources/templates/
+    prefix: classpath:/templates/
   datasource:
     url: "jdbc:mysql://localhost:3306/my_db"
     username: "my-user"
