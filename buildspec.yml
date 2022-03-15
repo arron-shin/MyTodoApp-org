@@ -14,8 +14,8 @@ phases:
 artifacts:
   files:
     - build/libs/*.jar
-    - appspec.yml   # CodeDeploy를 위해서 추가
-    - scripts/**    # CodeDeploy를 위해서 추가
+    - appspec.yml
+    - scripts/**
   discard-paths: yes
 
 cache:
