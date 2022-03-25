@@ -23,13 +23,13 @@ class TaskApiController(
 ) {
 
     @GetMapping("/{id}")
-    fun getTask(@PathVariable("id") id: Long): Task? {
+    suspend fun getTask(@PathVariable("id") id: Long): Task? {
         logger.info { "[API] GET /api/v1/tasks/$id" }
         return taskService.getTask(id)
     }
 
     @PostMapping
-    fun postTask(@RequestBody postTaskRequestDto: PostTaskRequestDto): Task {
+    suspend fun postTask(@RequestBody postTaskRequestDto: PostTaskRequestDto): Task {
         logger.info { "[API] POST /api/v1/tasks (requestBody: $postTaskRequestDto)" }
         return taskService.createTask(
             title = postTaskRequestDto.title,
@@ -40,27 +40,29 @@ class TaskApiController(
     }
 
     @PutMapping("/{id}")
-    fun modifyTask(
+    suspend fun modifyTask(
         @PathVariable("id") id: Long,
         @RequestBody putTaskRequestDto: PutTaskRequestDto,
     ): Task {
         logger.info { "[API] PUT /api/v1/tasks/$id (requestBody: $putTaskRequestDto)" }
-        return taskService.updateTask(
+        val task = Task(
             id = id,
             title = putTaskRequestDto.title,
             memo = putTaskRequestDto.memo,
+            checked = putTaskRequestDto.checked,
             deadline = putTaskRequestDto.deadline,
         )
+        return taskService.updateTask(task)
     }
 
     @DeleteMapping("/{id}")
-    fun deleteTask(@PathVariable("id") id: Long) {
+    suspend fun deleteTask(@PathVariable("id") id: Long) {
         logger.info { "[API] DELETE /api/v1/tasks/$id" }
         taskService.deleteTask(id)
     }
 
     @GetMapping
-    fun listTask(): List<Task> {
+    suspend fun listTask(): List<Task> {
         logger.info { "[API] GET /api/v1/tasks" }
         return taskService.list()
     }

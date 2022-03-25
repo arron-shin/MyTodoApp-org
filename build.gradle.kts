@@ -25,14 +25,21 @@ repositories {
 }
 
 dependencies {
-    implementation("mysql:mysql-connector-java")
+//    implementation("mysql:mysql-connector-java")
+    implementation("dev.miku:r2dbc-mysql:0.8.2.RELEASE")
     implementation("io.github.microutils:kotlin-logging:2.1.21")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-web")
+//    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-data-r2dbc:2.6.4")
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     implementation("org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE")
+
+    // for MacBook Pro M1
+    implementation("io.netty:netty-resolver-dns-native-macos:4.1.75.Final:osx-aarch_64")
+    implementation("io.netty:netty-all")
 
     // for test
     testImplementation("org.springframework.boot:spring-boot-starter-test")

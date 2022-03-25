@@ -1,18 +1,13 @@
 package me.jungseob.apps.mytodoapp.repository.entity
 
 import java.time.Instant
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.persistence.Table
 import me.jungseob.apps.mytodoapp.service.model.Task
+import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Table
 
-@Entity
-@Table(name = "tasks")
+@Table("tasks")
 data class TaskEntity(
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     val id: Long?,
     val title: String,
     val memo: String,

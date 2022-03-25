@@ -1,9 +1,8 @@
 package me.jungseob.apps.mytodoapp.service
 
 import java.time.Instant
-import java.time.LocalDateTime
 import me.jungseob.apps.mytodoapp.exception.MyNotFoundException
-import me.jungseob.apps.mytodoapp.repository.TaskRepository
+import me.jungseob.apps.mytodoapp.repository.TaskR2dbcRepository
 import me.jungseob.apps.mytodoapp.repository.entity.toEntity
 import me.jungseob.apps.mytodoapp.repository.entity.toModel
 import me.jungseob.apps.mytodoapp.service.model.Task
@@ -11,10 +10,10 @@ import org.springframework.stereotype.Service
 
 @Service
 class TaskService(
-    private val taskRepository: TaskRepository
+    private val taskR2dbcRepository: TaskR2dbcRepository,
 ) {
 
-    fun createTask(
+    suspend fun createTask(
         title: String,
         memo: String,
         checked: Boolean,
@@ -26,43 +25,29 @@ class TaskService(
             checked = checked,
             deadline = deadline,
         )
-        val savedTaskEntity = taskRepository.save(task.toEntity())
+        val savedTaskEntity = taskR2dbcRepository.insert(task.toEntity())
         return savedTaskEntity.toModel()
     }
 
-    fun getTask(id: Long): Task? {
-        val optionalTaskEntity = taskRepository.findById(id)
-        return optionalTaskEntity
-            .orElseThrow {
-                throw MyNotFoundException("Not found resource.")
-            }.toModel()
+    suspend fun getTask(id: Long): Task? {
+        val taskEntity = taskR2dbcRepository.findById(id)
+            ?: throw MyNotFoundException("Not found resource.")
+        return taskEntity.toModel()
     }
 
-    fun list(): List<Task> {
-        val taskEntities = taskRepository.findAll()
+    suspend fun list(): List<Task> {
+        val taskEntities = taskR2dbcRepository.findAll()
         return taskEntities.map { it.toModel() }
     }
 
-    fun updateTask(
-        id: Long,
-        title: String,
-        memo: String,
-        deadline: Instant,
+    suspend fun updateTask(
+        task: Task
     ): Task {
-        val optionalTaskEntity = taskRepository.findById(id)
-        return optionalTaskEntity.map { taskEntity ->
-            val updatedEntity = taskEntity.copy(
-                title = title,
-                memo = memo,
-                deadline = deadline,
-            )
-            taskRepository.save(updatedEntity).toModel()
-        }.orElseThrow {
-            throw MyNotFoundException("Not found resource.")
-        }
+        taskR2dbcRepository.update(task.toEntity())
+        return task
     }
 
-    fun deleteTask(id: Long) {
-        taskRepository.deleteById(id)
+    suspend fun deleteTask(id: Long) {
+        taskR2dbcRepository.deleteById(id)
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.thymeleaf.spring5.context.webflux.ReactiveDataDriverContextVariable
 
 @Controller
 class TaskViewController(
@@ -18,14 +19,14 @@ class TaskViewController(
     }
 
     @GetMapping("/tasks")
-    fun taskListView(model: Model): String {
+    suspend fun taskListView(model: Model): String {
         val tasks: List<Task> = taskService.list()
         model.addAttribute("tasks", tasks)
         return "task-list"
     }
 
     @GetMapping("/tasks/{id}")
-    fun taskUpdateView(@PathVariable id: Long, model: Model): String {
+    suspend fun taskUpdateView(@PathVariable id: Long, model: Model): String {
         val task = taskService.getTask(id)
         model.addAttribute("task", task)
         return "task-update"
