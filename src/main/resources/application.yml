@@ -22,6 +22,9 @@ spring:
     username: "my-user"
     password: "my-user-pwd"
 
+my-app:
+  welcome-message: "### Application is running on local profile! ${random.int} ###"
+
 ---
 
 spring:
@@ -45,3 +48,6 @@ spring:
     url: "r2dbc:mysql://database-mysql-mytodoapp.czzetsprii47.ap-northeast-2.rds.amazonaws.com:3306/my_db"
     username: "my-user"
     password: "my-user-pwd"
+
+my-app:
+  welcome-message: "### Application is running on release profile! ###"

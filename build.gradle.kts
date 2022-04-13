@@ -25,11 +25,9 @@ repositories {
 }
 
 dependencies {
-//    implementation("mysql:mysql-connector-java")
-    implementation("dev.miku:r2dbc-mysql:0.8.2.RELEASE")
     implementation("io.github.microutils:kotlin-logging:2.1.21")
-//    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-data-r2dbc:2.6.4")
+    implementation("dev.miku:r2dbc-mysql:0.8.2.RELEASE")
+    implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.jetbrains.kotlin:kotlin-reflect")

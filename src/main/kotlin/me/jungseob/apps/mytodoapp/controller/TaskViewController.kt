@@ -7,6 +7,7 @@ import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.thymeleaf.spring5.context.webflux.ReactiveDataDriverContextVariable
+import reactor.core.publisher.Mono
 
 @Controller
 class TaskViewController(
@@ -14,8 +15,8 @@ class TaskViewController(
 ) {
 
     @GetMapping("/")
-    fun homeView(): String {
-        return "home"
+    fun homeView(): Mono<String> {
+        return Mono.just("home")
     }
 
     @GetMapping("/tasks")
@@ -33,7 +34,7 @@ class TaskViewController(
     }
 
     @GetMapping("/tasks/new")
-    fun taskAddView(): String {
-        return "task-new"
+    fun taskAddView(): Mono<String> {
+        return Mono.just("task-new")
     }
 }

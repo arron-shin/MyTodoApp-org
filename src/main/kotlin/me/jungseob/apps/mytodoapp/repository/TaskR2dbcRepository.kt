@@ -4,7 +4,7 @@ import kotlinx.coroutines.reactor.awaitSingle
 import me.jungseob.apps.mytodoapp.repository.entity.TaskEntity
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate
 import org.springframework.data.r2dbc.core.allAndAwait
-import org.springframework.data.r2dbc.core.awaitOneOrNull
+import org.springframework.data.r2dbc.core.awaitOne
 import org.springframework.data.relational.core.query.Criteria
 import org.springframework.data.relational.core.query.Query
 import org.springframework.data.relational.core.query.Update
@@ -19,7 +19,7 @@ class TaskR2dbcRepository(
         val query = Query.query(Criteria.where("id").`is`(id))
         return r2dbcEntityTemplate.select(TaskEntity::class.java)
             .matching(query)
-            .awaitOneOrNull()
+            .awaitOne()
     }
 
     suspend fun findAll(): List<TaskEntity> {
@@ -53,4 +53,18 @@ class TaskR2dbcRepository(
             .matching(query)
             .allAndAwait()
     }
+}
+
+data class Person(var name: String? = null, var age: Int? = null)
+
+fun main() {
+    val list = listOf(1, 2, 3)
+    val mapResult = list.map { it + 1 }
+    val flatmapResult = list.flatMap { listOf(it + 1, it + 2) }
+    println(mapResult)
+    println(flatmapResult)
+
+    val listOfList = listOf(listOf(1,2), listOf(3,4), listOf(5,6))
+    println(listOfList.flatMap { it })
+    println(listOfList.flatten())
 }
