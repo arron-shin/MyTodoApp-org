@@ -1,17 +1,14 @@
 version: "3.4"
 
-x-common-mysql-env: &common-mysql-env
-  MYSQL_ROOT_PASSWORD: my-root-pwd
-  MYSQL_USER: my-user
-  MYSQL_PASSWORD: my-user-pwd
-
 services:
   mysql:
     image: mysql:8.0.28
     platform: linux/x86_64
     environment:
+      MYSQL_ROOT_PASSWORD: my-root-pwd
+      MYSQL_USER: my-user
+      MYSQL_PASSWORD: my-user-pwd
       MYSQL_DATABASE: my_db
-      <<: *common-mysql-env
     volumes:
       - ./src/main/resources/sql:/docker-entrypoint-initdb.d/
     ports:

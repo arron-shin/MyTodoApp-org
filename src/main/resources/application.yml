@@ -13,17 +13,11 @@ spring:
 #    password: "my-user-pwd"
 #  jpa:
 #    show-sql: true
-#    open-in-view: false
-#    hibernate:
-#      use-new-id-generator-mappings: false
 #    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
   r2dbc:
     url: "r2dbc:mysql://localhost:3306/my_db"
     username: "my-user"
     password: "my-user-pwd"
-
-my-app:
-  welcome-message: "### Application is running on local profile! ${random.int} ###"
 
 ---
 
@@ -40,14 +34,8 @@ spring:
 #    password: "my-user-pwd"
 #  jpa:
 #    show-sql: true
-#    open-in-view: false
-#    hibernate:
-#      use-new-id-generator-mappings: false
 #    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
   r2dbc:
     url: "r2dbc:mysql://database-mysql-mytodoapp.czzetsprii47.ap-northeast-2.rds.amazonaws.com:3306/my_db"
     username: "my-user"
     password: "my-user-pwd"
-
-my-app:
-  welcome-message: "### Application is running on release profile! ###"
