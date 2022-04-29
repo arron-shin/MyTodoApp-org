@@ -1,0 +1,1 @@
+web: java -jar -Dspring.profiles.active=release /var/app/current/MyTodoApp-0.0.1-SNAPSHOT.jar

@@ -16,6 +16,7 @@ artifacts:
     - build/libs/*.jar
     - appspec.yml
     - scripts/**
+    - Procfile
   discard-paths: yes
 
 cache:
