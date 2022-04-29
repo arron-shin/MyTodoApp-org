@@ -54,17 +54,3 @@ class TaskR2dbcRepository(
             .allAndAwait()
     }
 }
-
-data class Person(var name: String? = null, var age: Int? = null)
-
-fun main() {
-    val list = listOf(1, 2, 3)
-    val mapResult = list.map { it + 1 }
-    val flatmapResult = list.flatMap { listOf(it + 1, it + 2) }
-    println(mapResult)
-    println(flatmapResult)
-
-    val listOfList = listOf(listOf(1,2), listOf(3,4), listOf(5,6))
-    println(listOfList.flatMap { it })
-    println(listOfList.flatten())
-}

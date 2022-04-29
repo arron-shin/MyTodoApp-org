@@ -1,16 +1,18 @@
 package me.jungseob.apps.mytodoapp.controller
 
+import io.mockk.coEvery
+import io.mockk.coJustRun
+import io.mockk.coVerify
 import io.mockk.confirmVerified
-import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import io.mockk.justRun
-import io.mockk.verify
 import kotlin.random.Random
+import kotlinx.coroutines.runBlocking
 import me.jungseob.apps.mytodoapp.controller.dto.PostTaskRequestDto
 import me.jungseob.apps.mytodoapp.controller.dto.PutTaskRequestDto
 import me.jungseob.apps.mytodoapp.service.TaskService
+import me.jungseob.apps.mytodoapp.service.model.Task
 import me.jungseob.apps.mytodoapp.util.randomInstant
 import me.jungseob.apps.mytodoapp.util.randomNonNegativeLong
 import me.jungseob.apps.mytodoapp.util.randomShortAlphanumeric
@@ -32,15 +34,17 @@ class TaskApiControllerTest {
     fun `getTask() 호출 성공`() {
         // given
         val task = randomTask()
-        every { taskService.getTask(any()) } returns task
+        coEvery { taskService.getTask(any()) } returns task
 
         // when
         val id = randomNonNegativeLong()
-        val actual = underTest.getTask(id)
+        val actual = runBlocking {
+            underTest.getTask(id)
+        }
 
         // then
         assertThat(actual).isEqualTo(task)
-        verify(exactly = 1) { taskService.getTask(id) }
+        coVerify(exactly = 1) { taskService.getTask(id) }
         confirmVerified(taskService)
     }
 
@@ -48,7 +52,7 @@ class TaskApiControllerTest {
     fun `postTask() 호출 성공`() {
         // given
         val task = randomTask()
-        every { taskService.createTask(any(), any(), any(), any()) } returns task
+        coEvery { taskService.createTask(any(), any(), any(), any()) } returns task
 
         // when
         val postTaskRequestDto = PostTaskRequestDto(
@@ -57,11 +61,13 @@ class TaskApiControllerTest {
             checked = Random.nextBoolean(),
             deadline = randomInstant(),
         )
-        val actual = underTest.postTask(postTaskRequestDto)
+        val actual = runBlocking {
+            underTest.postTask(postTaskRequestDto)
+        }
 
         // then
         assertThat(actual).isEqualTo(task)
-        verify(exactly = 1) {
+        coVerify(exactly = 1) {
             taskService.createTask(
                 postTaskRequestDto.title,
                 postTaskRequestDto.memo,
@@ -76,25 +82,30 @@ class TaskApiControllerTest {
     fun `modifyTask() 호출 성공`() {
         // given
         val task = randomTask()
-        every { taskService.updateTask(any(), any(), any(), any()) } returns task
+        coEvery { taskService.updateTask(any()) } returns task
 
         // when
         val id = randomNonNegativeLong()
         val putTaskRequestDto = PutTaskRequestDto(
             title = randomShortAlphanumeric(),
             memo = randomShortAlphanumeric(),
+            checked = Random.nextBoolean(),
             deadline = randomInstant(),
         )
-        underTest.modifyTask(id, putTaskRequestDto)
+        runBlocking {
+            underTest.modifyTask(id, putTaskRequestDto)
+        }
 
         // then
-        verify(exactly = 1) {
-            taskService.updateTask(
-                id,
-                putTaskRequestDto.title,
-                putTaskRequestDto.memo,
-                putTaskRequestDto.deadline
-            )
+        val expectedTask = Task(
+            id = id,
+            title = putTaskRequestDto.title,
+            memo = putTaskRequestDto.memo,
+            checked = putTaskRequestDto.checked,
+            deadline = putTaskRequestDto.deadline,
+        )
+        coVerify(exactly = 1) {
+            taskService.updateTask(expectedTask)
         }
         confirmVerified(taskService)
     }
@@ -102,14 +113,14 @@ class TaskApiControllerTest {
     @Test
     fun `deleteTask() 호출 성공`() {
         // given
-        justRun { taskService.deleteTask(any()) }
+        coJustRun { taskService.deleteTask(any()) }
 
         // when
         val id = randomNonNegativeLong()
-        underTest.deleteTask(id)
+        runBlocking { underTest.deleteTask(id) }
 
         // then
-        verify(exactly = 1) { taskService.deleteTask(id) }
+        coVerify(exactly = 1) { taskService.deleteTask(id) }
         confirmVerified(taskService)
     }
 
@@ -119,14 +130,16 @@ class TaskApiControllerTest {
         val tasks = generateSequence { randomTask() }
             .take(Random.nextInt(0, 10))
             .toList()
-        every { taskService.list() } returns tasks
+        coEvery { taskService.list() } returns tasks
 
         // when
-        val actual = underTest.listTask()
+        val actual = runBlocking {
+            underTest.listTask()
+        }
 
         // then
         assertThat(actual).isEqualTo(tasks)
-        verify(exactly = 1) { taskService.list() }
+        coVerify(exactly = 1) { taskService.list() }
         confirmVerified(taskService)
     }
 }

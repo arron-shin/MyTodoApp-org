@@ -7,6 +7,7 @@ import io.mockk.junit5.MockKExtension
 import io.mockk.verify
 import java.util.Optional
 import kotlin.random.Random
+import kotlinx.coroutines.runBlocking
 import me.jungseob.apps.mytodoapp.exception.MyNotFoundException
 import me.jungseob.apps.mytodoapp.repository.TaskRepository
 import me.jungseob.apps.mytodoapp.repository.entity.toEntity
@@ -41,12 +42,14 @@ class TaskServiceTest {
         val memo = randomShortAlphanumeric()
         val checked = Random.nextBoolean()
         val deadline = randomInstant()
-        val actual = underTest.createTask(
-            title = title,
-            memo = memo,
-            checked = checked,
-            deadline = deadline,
-        )
+        val actual = runBlocking {
+            underTest.createTask(
+                title = title,
+                memo = memo,
+                checked = checked,
+                deadline = deadline,
+            )
+        }
 
         // then
         assertThat(actual).isEqualTo(taskEntity.toModel())
@@ -69,9 +72,11 @@ class TaskServiceTest {
 
         // when
         val id = randomNonNegativeLong()
-        val actual = underTest.getTask(
-            id = id,
-        )
+        val actual = runBlocking {
+            underTest.getTask(
+                id = id,
+            )
+        }
 
         // then
         val expected = taskEntity.toModel()
@@ -89,9 +94,11 @@ class TaskServiceTest {
         // when
         val id = randomNonNegativeLong()
         val actual = assertThatThrownBy {
-            underTest.getTask(
-                id = id,
-            )
+            runBlocking {
+                underTest.getTask(
+                    id = id,
+                )
+            }
         }
 
         // then
